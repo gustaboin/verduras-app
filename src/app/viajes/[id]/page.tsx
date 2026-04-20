@@ -30,9 +30,9 @@ export default async function ViajeDetailPage({ params }: Props) {
               Viaje #{viaje.id}
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
-              {new Date(viaje.fecha).toLocaleString('es-AR')}
-              {viaje.choferes && ` · ${(viaje.choferes as any).nombre}`}
-              {viaje.vehiculos && ` · ${(viaje.vehiculos as any).patente}`}
+              {viaje.fecha ? new Date(viaje.fecha).toLocaleString('es-AR') : '—'}
+              {viaje.choferes && ` · ${(viaje.choferes as { nombre: string }).nombre}`}
+              {viaje.vehiculos && ` · ${(viaje.vehiculos as { patente: string }).patente}`}
             </p>
           </div>
           <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${
@@ -41,7 +41,7 @@ export default async function ViajeDetailPage({ params }: Props) {
               EN_CURSO:    'bg-blue-100 text-blue-700',
               FINALIZADO:  'bg-green-100 text-green-700',
               CANCELADO:   'bg-red-100 text-red-600',
-            }[viaje.estado!] ?? ''
+            }[(viaje.estado ?? '') as 'PLANIFICADO' | 'EN_CURSO' | 'FINALIZADO' | 'CANCELADO'] ?? ''
           }`}>
             {viaje.estado}
           </span>

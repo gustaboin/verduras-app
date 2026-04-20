@@ -3,6 +3,7 @@ import { Geist } from 'next/font/google'
 import './globals.css'
 import Link from 'next/link'
 
+
 const geist = Geist({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ const NAV_ITEMS = [
   { href: '/productos', label: 'Productos',  icon: '🥦' },
   { href: '/pedidos',   label: 'Pedidos',    icon: '📋' },
   { href: '/viajes',    label: 'Viajes',     icon: '🚛' },
+  { href: '/configuracion', label: 'Configuración', icon: '⚙️' },
 ]
 
 export default function RootLayout({

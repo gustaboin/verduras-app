@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 
 type ViajeRow = {
   id: number
-  fecha: string
-  estado: string
+  fecha: string | null
+  estado: string | null
   choferes: { nombre: string } | null
   vehiculos: { patente: string; descripcion: string | null } | null
   transportes: { nombre: string } | null
@@ -70,7 +70,7 @@ export default function ViajesTable({ viajes }: { viajes: ViajeRow[] }) {
             {filtrados.map(v => (
               <tr key={v.id} className="hover:bg-muted/30 transition-colors">
                 <td className="px-4 py-3">
-                  {new Date(v.fecha).toLocaleDateString('es-AR')}
+                  {v.fecha ? new Date(v.fecha).toLocaleDateString('es-AR') : '—'}
                 </td>
                 <td className="px-4 py-3">{v.transportes?.nombre ?? '—'}</td>
                 <td className="px-4 py-3">{v.choferes?.nombre ?? '—'}</td>
