@@ -78,3 +78,16 @@ export async function updateEstadoCliente(
 
   if (error) throw error
 }
+
+// agrego esta funcionalidad para los pedidos
+
+// Para el select de pedidos (solo lo necesario)
+export async function getClientesSelect() {
+  const { data, error } = await supabase
+    .from('clientes')
+    .select('id, razon_social, nrodoc, puesto_id')
+    .eq('estado', 'activo')
+    .order('razon_social')
+  if (error) throw error
+  return data
+}

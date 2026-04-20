@@ -1,4 +1,4 @@
-import ClienteForm from '@/components/clientes/ClienteForm'
+import ClienteForm from '@/components/clientes/ClientesForm'
 import Link from 'next/link'
 
 export default function NuevoClientePage() {

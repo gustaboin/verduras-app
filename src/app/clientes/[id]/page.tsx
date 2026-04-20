@@ -1,14 +1,15 @@
 import { getClienteById } from '@/lib/clientes'
-import ClienteForm from '@/components/clientes/ClienteForm'
+import ClienteForm from '@/components/clientes/ClientesForm'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 interface Props {
-  params: { id: string }
+   params: Promise<{ id: string }>
 }
 
 export default async function ClienteDetailPage({ params }: Props) {
-  const cliente = await getClienteById(params.id).catch(() => null)
+  const { id } = await params
+  const cliente = await getClienteById(id).catch(() => null)
 
   if (!cliente) notFound()
 
