@@ -1,5 +1,18 @@
 import Image from "next/image";
 
+import { supabase } from '@/lib/supabase'
+
+/*
+export default async function Home() {
+  const { data, error } = await supabase.from('clientes').select('*').limit(5)
+  
+  return (
+    <pre>{JSON.stringify(data ?? error, null, 2)}</pre>
+  )
+}
+
+*/
+
 export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -63,3 +76,5 @@ export default function Home() {
     </div>
   );
 }
+
+
