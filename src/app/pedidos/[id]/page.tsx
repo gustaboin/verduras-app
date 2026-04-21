@@ -1,4 +1,4 @@
-import { getPedidoById, updateEstadoPedido } from '@/lib/pedidos'
+import { getPedidoById } from '@/lib/pedidos'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import EstadoPedidoSelector from '@/components/pedidos/EstadoPedidoSelector'
@@ -13,8 +13,22 @@ export default async function PedidoDetailPage({ params }: Props) {
 
   if (!pedido) notFound()
 
-  const cliente = pedido.clientes as any
-  const items   = pedido.pedido_items as any[]
+  const cliente = pedido.clientes as { razon_social: string; localidad: string; telefono: string | null }
+  const items   = pedido.pedido_items as {
+  id: number
+  cantidad: number
+  cantidad_enviada: number
+  es_recortable: boolean
+  calidad_requerida: { nombre: string } | null
+  productos_presentacion: {
+    descripcion: string | null
+    kg_por_unidad: number | null
+    productos: { nombre: string } | null
+    tipos_envase: { nombre: string } | null
+    unidades: { abreviatura: string | null } | null
+  } | null
+}[]
+  
 
   return (
     <div className="p-6 space-y-8 max-w-4xl">
@@ -30,6 +44,14 @@ export default async function PedidoDetailPage({ params }: Props) {
             </p>
           </div>
           <EstadoPedidoSelector pedidoId={pedido.id} estadoActual={pedido.estado!} />
+          {pedido.estado === 'PENDIENTE' && (
+          <Link
+            href={`/pedidos/${pedido.id}/edit`}
+            className="rounded-md border px-4 py-1.5 text-sm font-medium hover:bg-muted transition-colors"
+          >
+            Editar pedido
+          </Link>
+        )}
         </div>
       </div>
 

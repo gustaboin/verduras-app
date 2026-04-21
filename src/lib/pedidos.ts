@@ -77,7 +77,7 @@ export async function createPedidoConItems(
 
 export async function updateEstadoPedido(
   id: string,
-  estado: 'PENDIENTE' | 'PREPARANDO' | 'DESPACHADO' | 'PARCIAL' | 'CANCELADO'
+  estado: 'PENDIENTE' | 'CONFIRMADO' | 'CERRADO' | 'CANCELADO'
 ) {
   const { error } = await supabase
     .from('pedidos')
@@ -100,4 +100,43 @@ export async function deletePedidoItem(id: number) {
     .delete()
     .eq('id', id)
   if (error) throw error
+}
+
+// Para pedidos PENDIENTES, permite actualizar tanto la cabecera como los items en una sola operación
+
+export async function updatePedidoConItems(
+  pedidoId: string,
+  pedido: {
+    cliente_id: string
+    puesto_id: number | null
+    fecha_pedido: string
+    fecha_compromiso: string | null
+    observaciones: string | null
+  },
+  items: {
+    producto_presentacion_id: number
+    cantidad: number
+    calidad_requerida_id: number | null
+    es_recortable: boolean
+  }[]
+) {
+  // Actualiza cabecera
+  const { error: errorPedido } = await supabase
+    .from('pedidos')
+    .update(pedido)
+    .eq('id', pedidoId)
+  if (errorPedido) throw errorPedido
+
+  // Borra todos los items anteriores y los reinserta
+  // Es la forma más simple y segura para un pedido PENDIENTE
+  const { error: errorDelete } = await supabase
+    .from('pedido_items')
+    .delete()
+    .eq('pedido_id', pedidoId)
+  if (errorDelete) throw errorDelete
+
+  const { error: errorItems } = await supabase
+    .from('pedido_items')
+    .insert(items.map(item => ({ ...item, pedido_id: pedidoId })))
+  if (errorItems) throw errorItems
 }
