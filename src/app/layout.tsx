@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist } from 'next/font/google'
 import './globals.css'
 import Link from 'next/link'
+import LogoutButton from '@/components/auth/LogoutButton'
 
 
 const geist = Geist({ subsets: ['latin'] })
@@ -49,8 +50,9 @@ export default function RootLayout({
               ))}
             </nav>
 
-            <div className="px-5 py-4 border-t">
-              <p className="text-xs text-muted-foreground">v0.1.0</p>
+            <div className="px-3 py-4 border-t space-y-1">
+              <LogoutButton />
+              <p className="px-3 text-xs text-muted-foreground">v0.1.0</p>
             </div>
           </aside>
 
