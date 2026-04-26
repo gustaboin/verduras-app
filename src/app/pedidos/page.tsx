@@ -1,3 +1,4 @@
+
 import { getPedidos } from '@/lib/pedidos'
 import PedidosTable from '@/components/pedidos/PedidosTable'
 import Link from 'next/link'
@@ -27,3 +28,4 @@ export default async function PedidosPage() {
     </div>
   )
 }
+
