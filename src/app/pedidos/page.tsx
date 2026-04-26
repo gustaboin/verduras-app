@@ -1,6 +1,7 @@
 import { getPedidos } from '@/lib/pedidos'
 import PedidosTable from '@/components/pedidos/PedidosTable'
 import Link from 'next/link'
+import { getUsuarioActual } from '@/lib/auth'
 
 export default async function PedidosPage() {
   const pedidos = await getPedidos()

@@ -3,7 +3,7 @@ import { Geist } from 'next/font/google'
 import './globals.css'
 import Link from 'next/link'
 import LogoutButton from '@/components/auth/LogoutButton'
-
+import { getUsuarioActual } from '@/lib/auth'
 
 const geist = Geist({ subsets: ['latin'] })
 
@@ -12,19 +12,25 @@ export const metadata: Metadata = {
   description: 'Sistema de pedidos y logística',
 }
 
-const NAV_ITEMS = [
-  { href: '/clientes',  label: 'Clientes',   icon: '👥' },
-  { href: '/productos', label: 'Productos',  icon: '🥦' },
-  { href: '/pedidos',   label: 'Pedidos',    icon: '📋' },
-  { href: '/viajes',    label: 'Viajes',     icon: '🚛' },
-  { href: '/configuracion', label: 'Configuración', icon: '⚙️' },
-]
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const usuario = await getUsuarioActual()
+  const esAdmin = usuario?.rol === 'admin'
+
+  const NAV_ITEMS = [
+    { href: '/clientes',  label: 'Clientes',  icon: '👥' },
+    { href: '/productos', label: 'Productos', icon: '🥦' },
+    { href: '/pedidos',   label: 'Pedidos',   icon: '📋' },
+    { href: '/viajes',    label: 'Viajes',    icon: '🚛' },
+    ...(esAdmin ? [
+      { href: '/usuarios',      label: 'Usuarios',      icon: '🔑' },
+      { href: '/configuracion', label: 'Configuración', icon: '⚙️' },
+    ] : []),
+  ]
+
   return (
     <html lang="es">
       <body className={geist.className}>
